@@ -26,8 +26,8 @@ public class AppUser {
 
     @ManyToMany(mappedBy = "followed", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(name = "follower_followed",
-            joinColumns = {@JoinColumn(name = "follower_id")},
-            inverseJoinColumns = {@JoinColumn(name="followed_id")})
+            joinColumns = {@JoinColumn(name = "follower_fk")},
+            inverseJoinColumns = {@JoinColumn(name="followed_fk")})
     private Set<AppUser> following = new HashSet<>();
 
     @Column(name = "registreted_since")
