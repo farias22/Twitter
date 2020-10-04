@@ -36,6 +36,8 @@ public class AppUser {
     private Date registretedSince;
 
 
+    private boolean isActive;
+
     public AppUser() {
     }
 
@@ -109,6 +111,15 @@ public class AppUser {
         return password;
     }
 
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean status) {
+        this.isActive = status;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -138,6 +149,7 @@ public class AppUser {
                 ", following=" + following +
                 ", followed=" + followers +
                 ", registretedSince=" + registretedSince +
+                ", status" + isActive +
                 '}';
     }
     public static class UserBuilder {
@@ -178,6 +190,7 @@ public class AppUser {
             user.setName(this.name);
             user.setLastName(this.lastName);
             user.setEmail(this.email);
+            user.setIsActive(true);
             return user;
         }
     }

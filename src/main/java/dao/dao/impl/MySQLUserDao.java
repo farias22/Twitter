@@ -1,20 +1,21 @@
 package dao.dao.impl;
 
-import dao.AbstractAppUser;
+import dao.AbstractSQLDao;
 import models.AppUser;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class MySQLUserDao extends AbstractAppUser implements dao.AppUserDao {
+public class MySQLUserDao extends AbstractSQLDao implements dao.AppUserDao {
 
 
     @Override
     public HashSet<AppUser> getAll() {
 
-        TypedQuery<AppUser> allUsers = entityManager.createQuery("select u from AppUser u", AppUser.class);
+        TypedQuery<AppUser> allUsers = entityManager.createQuery("from AppUser u where u.isActive=true", AppUser.class);
         List<AppUser> resultList = allUsers.getResultList();
 
         return new HashSet<>(resultList);
@@ -28,14 +29,14 @@ public class MySQLUserDao extends AbstractAppUser implements dao.AppUserDao {
     @Override
     public void delete(AppUser appUser) {
 
-        unfollowBeforeDelete(appUser);
-        hibernateUtil.delete(AppUser.class, appUser.getId());
+        //unfollowBeforeDelete(appUser);
+        appUser.setIsActive(false);
     }
 
 
     @Override
     public AppUser getUserById(Long id) {
-        TypedQuery<AppUser> allUsers = entityManager.createQuery("select u from AppUser u where u.id= :id", AppUser.class);
+        TypedQuery<AppUser> allUsers = entityManager.createQuery("from AppUser u where u.id= :id", AppUser.class);
         allUsers.setParameter("id", id);
         AppUser result = allUsers.getSingleResult();
 
@@ -66,15 +67,19 @@ public class MySQLUserDao extends AbstractAppUser implements dao.AppUserDao {
     @Override
     public HashSet<AppUser> getFallowedUsers(AppUser loggedUser) {
 
+        TypedQuery<AppUser> query = entityManager.createQuery("from AppUser u where u.id =: userId and u.isActive=true ", AppUser.class);
+        query.setParameter("userId", loggedUser.getId());
+        List<AppUser> resultList = query.getResultList();
 
-        return new HashSet<>(loggedUser.getFollowing());
+
+        return new HashSet<AppUser>(resultList);
 
     }
 
     @Override
     public HashSet<AppUser> getNotFallowedUsers(AppUser loggedUser) {
 
-        Query query = entityManager.createQuery("select u from AppUser u where u not in :followed");
+        Query query = entityManager.createQuery("select u from AppUser u where u not in :followed and u.isActive=true");
         query.setParameter("followed", new HashSet<>(loggedUser.getFollowing()));
         return new HashSet<>(query.getResultList());
 
@@ -84,7 +89,7 @@ public class MySQLUserDao extends AbstractAppUser implements dao.AppUserDao {
     public HashSet<AppUser> getFallowers(AppUser loggedUser) {
 
 
-        Query query = entityManager.createQuery("select followers from AppUser u where u.id= :userId");
+        Query query = entityManager.createQuery("select followers from AppUser u where u.id= :userId and u.isActive=true");
         query.setParameter("userId", loggedUser.getId());
         return new HashSet<>(query.getResultList());
 

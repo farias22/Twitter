@@ -4,7 +4,7 @@ import hibernate.util.HibernateUtil;
 
 import javax.persistence.EntityManager;
 
-public class AbstractAppUser {
+public class AbstractSQLDao {
 
     protected final HibernateUtil hibernateUtil = HibernateUtil.getInstance();
 

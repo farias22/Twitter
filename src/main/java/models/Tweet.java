@@ -18,11 +18,17 @@ public class Tweet {
     @Column(name = "published_at")
     @CreationTimestamp()
     private Date publishedAt;
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "author_fk")
-    private AppUser appUser;
+
+
+    private String author;
 
     public Tweet() {
+    }
+
+
+    public Tweet(String author, String message) {
+        this.author=author;
+        this.message=message;
     }
 
     public Long getId() {
@@ -33,12 +39,12 @@ public class Tweet {
         this.id = id;
     }
 
-    public AppUser getAppUser() {
-        return appUser;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setAppUser(AppUser appUser) {
-        this.appUser = appUser;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getMessage() {
@@ -63,23 +69,27 @@ public class Tweet {
         if (o == null || getClass() != o.getClass()) return false;
         Tweet tweet = (Tweet) o;
         return Objects.equals(id, tweet.id) &&
-                Objects.equals(appUser, tweet.appUser) &&
+                Objects.equals(author, tweet.author) &&
                 Objects.equals(message, tweet.message) &&
                 Objects.equals(publishedAt, tweet.publishedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, appUser, message, publishedAt);
+        return Objects.hash(id, author, message, publishedAt);
     }
 
     @Override
     public String toString() {
         return "Tweet{" +
                 "id=" + id +
-                ", appUser=" + appUser +
+                ", appUser=" + author +
                 ", message='" + message + '\'' +
                 ", publishedAt=" + publishedAt +
                 '}';
     }
+
+
+
+
 }
