@@ -13,7 +13,7 @@ import java.util.Set;
 public class AppUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String login;
     private String name;
@@ -21,10 +21,11 @@ public class AppUser {
     private String lastName;
     private String email;
     private String password;
+
     @ManyToMany(mappedBy = "following", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private Set<AppUser> followers = new HashSet<>();
 
-    @ManyToMany(mappedBy = "followed", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(name = "follower_followed",
             joinColumns = {@JoinColumn(name = "follower_fk")},
             inverseJoinColumns = {@JoinColumn(name="followed_fk")})
