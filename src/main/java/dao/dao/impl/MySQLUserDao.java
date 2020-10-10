@@ -3,10 +3,12 @@ package dao.dao.impl;
 import dao.AbstractSQLDao;
 import models.AppUser;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MySQLUserDao extends AbstractSQLDao implements dao.AppUserDao {
@@ -35,32 +37,44 @@ public class MySQLUserDao extends AbstractSQLDao implements dao.AppUserDao {
 
 
     @Override
-    public AppUser getUserById(Long id) {
+    public Optional<AppUser> getUserById(Long id) {
         TypedQuery<AppUser> allUsers = entityManager.createQuery("from AppUser u where u.id= :id", AppUser.class);
         allUsers.setParameter("id", id);
         AppUser result = allUsers.getSingleResult();
 
-        return result;
+        try {
+            return Optional.ofNullable(result);
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 
     @Override
-    public AppUser getUserByEmail(String email) {
+    public Optional <AppUser> getUserByEmail(String email) {
 
         TypedQuery<AppUser> allUsers = entityManager.createQuery("select u from AppUser u where u.email= :email", AppUser.class);
         allUsers.setParameter("email", email);
         AppUser result = allUsers.getSingleResult();
 
-        return result;
+        try {
+            return Optional.ofNullable(result);
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 
     @Override
-    public AppUser getUserByLogin(String login) {
+    public Optional <AppUser> getUserByLogin(String login) {
 
         TypedQuery<AppUser> allUsers = entityManager.createQuery("select u from AppUser u where u.login= :login", AppUser.class);
         allUsers.setParameter("login", login);
         AppUser result = allUsers.getSingleResult();
 
-        return result;
+        try {
+            return Optional.ofNullable(result);
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
 
     }
 
