@@ -2,6 +2,7 @@ package services;
 
 import error.ValidationError;
 import models.AppUser;
+import models.Tweet;
 
 import java.util.HashSet;
 import java.util.List;
@@ -25,5 +26,13 @@ public interface TweetAppService {
     void fallow(AppUser currentUser, AppUser userToFallow);
 
     void unfallow(AppUser currentUser, AppUser userToFallow);
+
+    List<Tweet> getUserTweets(AppUser appUser);
+
+    void save(Tweet tweet);
+
+    void delete(Long tweetId);
+
+
 }
 

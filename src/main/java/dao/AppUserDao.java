@@ -1,6 +1,7 @@
 package dao;
 
 import models.AppUser;
+import models.Tweet;
 
 import java.util.HashSet;
 import java.util.Optional;
