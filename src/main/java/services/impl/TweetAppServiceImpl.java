@@ -71,6 +71,17 @@ public class TweetAppServiceImpl implements TweetAppService {
         return appUserDao.getFollowers(user);
     }
 
+
+    @Override
+    public void fallow(AppUser currentUser, AppUser userToFallow) {
+        appUserDao.follow(currentUser,userToFallow);
+    }
+
+    @Override
+    public void unfallow(AppUser currentUser, AppUser userToFallow) {
+        appUserDao.unfollow(currentUser,userToFallow);
+    }
+
     private boolean isUserLoginInUse(String userLogin) {
         return appUserDao
                 .getUserByLogin(userLogin)

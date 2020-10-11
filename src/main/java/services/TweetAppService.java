@@ -21,5 +21,9 @@ public interface TweetAppService {
     HashSet<AppUser> getNotFollowedUsers(AppUser user);
 
     HashSet<AppUser> getFollowers(AppUser user);
+
+    void fallow(AppUser currentUser, AppUser userToFallow);
+
+    void unfallow(AppUser currentUser, AppUser userToFallow);
 }
 

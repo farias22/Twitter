@@ -33,7 +33,7 @@ public class AppUser {
 
     @Column(name = "registreted_since")
     @CreationTimestamp()
-    private Date registretedSince;
+    private Date registeredSince;
 
 
     private boolean isActive;
@@ -98,12 +98,12 @@ public class AppUser {
         this.followers = followed;
     }
 
-    public Date getRegistretedSince() {
-        return registretedSince;
+    public Date getRegisteredSince() {
+        return registeredSince;
     }
 
-    public void setRegistretedSince(Date registretedSince) {
-        this.registretedSince = registretedSince;
+    public void setRegisteredSince(Date registretedSince) {
+        this.registeredSince = registretedSince;
     }
 
 
@@ -148,7 +148,7 @@ public class AppUser {
                 ", password='" + password + '\'' +
                 ", following=" + following +
                 ", followed=" + followers +
-                ", registretedSince=" + registretedSince +
+                ", registretedSince=" + registeredSince +
                 ", status" + isActive +
                 '}';
     }

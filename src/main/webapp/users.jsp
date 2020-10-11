@@ -32,17 +32,17 @@
 
     <div class="my-3 p-3 bg-white rounded box-shadow">
         <h6 class="border-bottom border-gray pb-2 mb-0">Following</h6>
-        <c:forEach items="${followedUsers}" var="followedUser">
+        <c:forEach items="${followedUsers}" var="followedUsers">
             <div class="media text-muted pt-3">
-                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" class="mr-2 rounded" width="32"
+                <img src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="" class="mr-2 rounded" width="32"
                      height="32">
                 <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                    <strong class="d-block text-gray-dark">${followedUser.login}</strong>
-                    <strong class="d-block text-gray-dark">${followedUser.name}</strong>
+                    <strong class="d-block text-gray-dark">${followedUsers.login}</strong>
+                    <strong class="d-block text-gray-dark">${followedUsers.name}</strong>
                     <strong class="d-block text-gray-dark">
                         On twitter since :
-                        <fmt:formatDate value="${followedUser.registeredSince}" pattern="yyyy-MM-dd HH-mm"/> </strong>
-                    <a href="unfollow?userLoginToUnfollow=${followedUser.login}"><b>Unfollow</b></a>
+                        <fmt:formatDate value="${followedUsers.registeredSince}" pattern="yyyy-MM-dd"/> </strong>
+                    <a href="unfollow?userLoginToUnfollow=${followedUsers.login}"><b>Unfollow</b></a>
                 </p>
             </div>
         </c:forEach>
@@ -58,7 +58,7 @@
                     <strong class="d-block text-gray-dark">${follower.name}</strong>
                     <strong class="d-block text-gray-dark">
                         On twitter since :
-                        <fmt:formatDate value="${follower.registeredSince}" pattern="yyyy-MM-dd HH-mm"/> </strong>
+                        <fmt:formatDate value="${follower.registeredSince}" pattern="yyyy-MM-dd"/> </strong>
                 </p>
             </div>
         </c:forEach>
@@ -75,7 +75,7 @@
                     <strong class="d-block text-gray-dark">${notFollowedUser.lastName}</strong>
                     <strong class="d-block text-gray-dark">
                         On Twitter since :
-                        <fmt:formatDate value="${notFollowedUser.registretedSince}" pattern="yyyy-MM-dd"/> </strong>
+                        <fmt:formatDate value="${notFollowedUser.registeredSince}" pattern="yyyy-MM-dd"/> </strong>
                     </br>
                     <a href="follow?userLoginToFollow=${notFollowedUser.login}"><b>Follow</b></a>
                 </p>
