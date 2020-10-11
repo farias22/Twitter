@@ -4,16 +4,18 @@ import dao.AppUserDao;
 import dao.TweetDao;
 import error.ValidationError;
 import models.AppUser;
+import org.apache.commons.codec.digest.DigestUtils;
 import services.TweetAppService;
 
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import static utils.ServletUtils.*;
 
 public class TweetAppServiceImpl implements TweetAppService {
-
     private AppUserDao appUserDao;
     private TweetDao tweetDao;
 
@@ -23,41 +25,62 @@ public class TweetAppServiceImpl implements TweetAppService {
     }
 
     @Override
-    public List<ValidationError> validateUser(AppUser appUser) {
-        List<ValidationError> errors = new ArrayList<>();
+    public void registerUser(AppUser user) {
+        appUserDao.saveUser(user);
+    }
 
-        if (!isLoginAvailable(appUser.getLogin())) {
-            errors.add(new ValidationError(LOGIN_ERROR_HEADER, LOGIN_IN_USE_ERROR_MESSAGE));
-        }
-        if (!isMailAvailable(appUser.getEmail())) {
+    @Override
+    public List<ValidationError> validateUser(String login, String email) {
+        List<ValidationError> errors = new ArrayList<>();
+        if (isUserEmailInUse(email)) {
             errors.add(new ValidationError(EMAIL_ERROR_HEADER, EMAIL_ERROR_MESSAGE));
+        }
+        if (isUserLoginInUse(login)) {
+            errors.add(new ValidationError(LOGIN_ERROR_HEADER, LOGIN_IN_USE_ERROR_MESSAGE));
         }
         return errors;
     }
 
+    @Override
+    public boolean isLoginAndPasswordValid(String login, String hashPassword) {
+        Optional<AppUser> userByLogin = appUserDao.getUserByLogin(login);
+        if (userByLogin.isEmpty()) {
+            return false;
+        }
+        String passFromDB = userByLogin.get().getPassword();
+        return passFromDB.equals(hashPassword);
+    }
 
     @Override
-    public void registerUser(AppUser appUser) {
-        appUserDao.saveUser(appUser);
+    public HashSet<AppUser> getFollowedUsers(AppUser user) {
+        return appUserDao.getFollowedUsers(user);
     }
 
-    private boolean isLoginAvailable(String appUserLogin) {
-        try {
-            appUserDao.getUserByLogin(appUserLogin);
-            return false;
-        } catch (NoResultException ex) {
-            return true;
-        }
+    @Override
+    public AppUser getUser(String userLogin) {
+        return appUserDao.getUserByLogin(userLogin).get();
     }
 
-    private boolean isMailAvailable(String appUserMail) {
-        try {
-            appUserDao.getUserByEmail(appUserMail);
-            return false;
-        } catch (NoResultException ex) {
-            return true;
-        }
+    @Override
+    public HashSet<AppUser> getNotFollowedUsers(AppUser user) {
+        return appUserDao.getNotFollowedUsers(user);
+    }
+
+    @Override
+    public HashSet<AppUser> getFollowers(AppUser user) {
+        return appUserDao.getFollowers(user);
+    }
+
+    private boolean isUserLoginInUse(String userLogin) {
+        return appUserDao
+                .getUserByLogin(userLogin)
+                .isPresent();
     }
 
 
+    private boolean isUserEmailInUse(String userEmail) {
+        return appUserDao
+                .getUserByEmail(userEmail)
+                .isPresent();
+    }
 }

@@ -37,12 +37,12 @@ public class TempTest {
         dao.saveUser(user1);
         dao.saveUser(user2);
         dao.saveUser(user3);
-        dao.delete(user2);
+        dao.deleteUser(user2);
 
 
-        dao.fallow(user1, user3);
-        dao.fallow(user2,user3);
-        dao.fallow(user1,user3);
+        dao.follow(user1, user3);
+        dao.follow(user2,user3);
+        dao.follow(user1,user3);
 
 
         TweetDao tweetDao = new MySQLTweetDao();
@@ -53,11 +53,11 @@ public class TempTest {
         tweetDao.save(new Tweet(user1.getLogin(), "QQQQQQQQQQQQQQQ"));
 
 
-        tweetDao.deleteTweet(2L);
+        tweetDao.delete(2L);
         System.out.println(tweetDao.getTweet(1L));
 
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!");
-        for (Tweet tweet : tweetDao.getUserTweet(user1)) {
+        for (Tweet tweet : tweetDao.getUserTweets(user1)) {
             System.out.println(tweet);
             System.out.println("#######");
         }

@@ -9,25 +9,25 @@ public interface AppUserDao {
 
     HashSet<AppUser> getAll();
 
-    void saveUser(AppUser appUser);
+    void saveUser(AppUser user);
 
-    void delete(AppUser appUser);
+    void deleteUser(AppUser user);
 
     Optional<AppUser> getUserById(Long id);
 
-    Optional <AppUser> getUserByEmail(String email);
+    Optional<AppUser> getUserByEmail(String email);
 
-    Optional <AppUser> getUserByLogin(String login);
+    Optional<AppUser> getUserByLogin(String login);
 
-    HashSet<AppUser> getFallowedUsers (AppUser loggedUser);
+    HashSet<AppUser> getFollowedUsers(AppUser loggedUser);
 
-    HashSet<AppUser> getNotFallowedUsers (AppUser loggedUser);
+    HashSet<AppUser> getNotFollowedUsers(AppUser loggedUser);
 
-    HashSet<AppUser> getFallowers (AppUser loggedUser);
+    HashSet<AppUser> getFollowers(AppUser loggedUser);
 
-    void fallow(AppUser logged, AppUser appUser);
+    void follow(AppUser logged, AppUser userToFollow);
 
-    void unfollow(AppUser logged, AppUser appUser);
+    void unfollow(AppUser logged, AppUser userToFollow);
 
 
 }
